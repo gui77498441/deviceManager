@@ -1,0 +1,113 @@
+{% extends 'commonuser.html' %}
+{% block  content_block %}
+
+<div class="pd-20">
+  <div class="text-c"> 
+   
+
+  </div>
+  <div class="cl pd-5 bg-1 bk-gray mt-20">
+    <span class="l">
+
+	 <input type="text" class="input-text" style="width:250px" placeholder="输入序列号、类型、使用人" id="" name=""><button type="submit" class="btn btn-primary radius" id="" name=""><i class="icon-search"></i> 搜索</button>
+	 <a href="javascript:;" onclick="datadel()" class="btn btn-primary radius"><i class="icon-trash"></i> 刷新</a>
+	</span>
+	
+    
+  </div>
+  <table class="table table-border table-bordered table-hover table-bg table-sort">
+  
+    <thead>
+      <tr class="text-c">
+        <th width="">ID</th>
+        <th width="">类型</th>
+        <th width="">设备名称</th>
+        <th width="">SN号</th>
+        <th width="">PN号</th>
+		<th width="">机架</th>
+        <th width="">U数</th>
+        <th width="">使用人</th>
+        <th width="">是否可用</th>
+       
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="text-c">
+        
+        <td>1</td>
+        <td>服务器</td>
+        <td>NFM4001</td>
+        <td>13000000000</td>
+        <td>13000000000DDD</td>
+        <td >20</td>
+        <td>3-7</td>
+		<td>冰洋</td>
+        <td class="user-status"><span class="label label-success">是</span></td>
+        
+	
+      </tr>
+	    <tr class="text-c">
+        
+        <td>1</td>
+       
+        <td>服务器</td>
+        <td>NFM4001</td>
+        <td>12000000000</td>
+        <td>13000000000EEE</td>
+        <td >20</td>
+        <td>3-7</td>
+		<td>冰洋</td>
+        <td class="user-status"><span class="label label-fail">否</span></td>
+        
+	
+      </tr>
+    </tbody>
+  </table>
+  <span class="r">共有数据：<strong>88</strong> 条</span>
+  <div id="pageNav" class="pageNav"></div>
+  
+  
+  
+  
+    
+   
+</div>
+<!--_footer 作为公共模版分离出去-->
+
+
+<script type="text/javascript" src="{{url_for('static',filename='h-ui.admin/js/H-ui.admin.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='h-ui/js/H-ui.min.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='lib/layer/2.4/layer.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='lib/jquery/1.9.1/jquery.min.js')}}" ></script> 
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+
+
+<script type="text/javascript" src="{{url_for('static',filename='lib/My97DatePicker/4.8/WdatePicker.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='lib/datatables/1.10.0/jquery.dataTables.min.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='lib/laypage/1.2/laypage.js')}}" ></script> 
+<script type="text/javascript">
+window.onload = (function(){
+    // optional set
+    pageNav.pre="&lt;上一页";
+    pageNav.next="下一页&gt;";
+    // p,当前页码,pn,总页面
+    pageNav.fn = function(p,pn){$("#pageinfo").text("当前页:"+p+" 总页: "+pn);};
+    //重写分页状态,跳到第三页,总页33页
+    pageNav.go(1,13);
+});
+$('.table-sort').dataTable({
+	"lengthMenu":false,//显示数量选择 
+	"bFilter": false,//过滤功能
+	"bPaginate": false,//翻页信息
+	"bInfo": false,//数量信息
+	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+	"bStateSave": false,//状态保存
+	"aoColumnDefs": [
+	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+	  {"orderable":false,"aTargets":[0,8,8]}// 制定列不参与排序
+	]
+});
+</script>
+{% endblock %}

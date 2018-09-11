@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block menu_block %}
+<aside class="Hui-aside">
+	<div class="menu_dropdown bk_2">
+		<dl id="menu-article">
+			<dt><i class="Hui-iconfont">&#xe616;</i> 资产查询<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a data-href="article-list.html" data-title="资讯管理" href="{{url_for('web.commonuser_device')}}">整机查询</a></li>
+					<li><a data-href="article-list.html" data-title="资讯管理" href="javascript:void(0)">散件查询</a></li>
+			</ul>
+		</dd>
+	</dl>
+		<dl id="menu-picture">
+			<dt><i class="Hui-iconfont">&#xe613;</i> 资产转让<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a data-href="article-list.html" data-title="资讯管理" href="javascript:void(0)">整机转让</a></li>
+					<li><a data-href="article-list.html" data-title="资讯管理" href="javascript:void(0)">散件转让</a></li>
+			</ul>
+		</dd>
+			
+	</dl>
+		<dl id="menu-product">
+			<dt><i class="Hui-iconfont">&#xe620;</i> 待办事项<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a data-href="article-list.html" data-title="资讯管理" href="{{url_for('web.commonuser_todo')}}">待办事项</a></li>
+					
+			</ul>
+		</dd>
+			
+		</dl>
+			
+	
+</div>
+</aside>
+{% endblock %}
+
+
+{% block  content_block %}
+
+{% endblock %}

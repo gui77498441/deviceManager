@@ -1,0 +1,416 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='h-ui/css/H-ui.min.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='h-ui.admin/css/H-ui.admin.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='h-ui.admin/skin/green/skin.css')}}" id="skin" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='lib/Hui-iconfont/1.0.8/iconfont.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='h-ui.admin/css/style.css')}}" />
+
+
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>物料管理系统</title>
+</head>
+<body style="background:transparent">
+
+
+<div class="pd-20">
+  <div class="text-c"> 
+   
+
+  </div>
+  <div class="cl pd-5 bg-1 bk-gray mt-20">
+    <span class="l">
+	<a href="javascript:;" onclick="addDevice('添加设备','{{url_for('web.admin_device_manager_add')}}','','510')" class="btn btn-primary radius"><i class="icon-trash"></i> 添加设备</a>
+	<a href="javascript:;" onclick="deleteDevice()" class="btn btn-primary radius"><i class="icon-plus"></i> 批量删除</a>
+	<a href="javascript:;" onclick="transfer()" class="btn btn-primary radius"><i class="icon-trash"></i> 批量转让</a>
+	<a href="javascript:;" onclick="flush()" class="btn btn-primary radius"><i class="icon-trash"></i> 刷新</a>
+	</span>
+	<span style ="float:right">
+     <input type="text" class="input-text" style="width:250px" placeholder="输入序列号、类型、使用人" id="search_text" name=""><button type="submit" class="btn btn-success radius" id="device_search" name="device_search" onclick = "device_search(this)"><i class="icon-search"></i> 搜索</button>
+	 </span>
+    
+  </div>
+  <table class="table table-border table-bordered table-hover table-bg table-sort" id = "device_table">
+  
+    <thead>
+      <tr class="text-c">
+        <th width=""><input type="checkbox" name="" value=""></th>
+        <th width="">ID</th>
+        <th width="">类型</th>
+        <th width="">设备名称</th>
+        <th width="">SN号</th>
+        <th width="">PN号</th>
+		<th width="">机架</th>
+        <th width="">U数</th>
+        <th width="">使用人</th>
+        <th width="">是否可用(0:否,1:是)</th>	
+        <th width="120px">操作</th>
+      </tr>
+    </thead>
+	
+	
+    <tbody>
+	  {% for item in deviceList %}
+      <tr class="text-c">
+        <td><input type="checkbox" value="1" name="" id={{item.id}} onclick="changeState(this)"></td>	
+		<td>{{item.id}}</td>
+        <td index =''>{{item.type}}</td>
+        <td>{{item.devicename}}</td>
+        <td>{{item.sn}}</td>
+        <td>{{item.pn}}</td>
+        <td>{{item.rack}}</td>
+        <td>{{item.u_number}}</td>
+		<td>{{item.user}}</td>
+		<td>{{item.isgood}}</td>
+		<!--{% if item.isgood == 1%}
+        <td class="user-status"  id ='isgood_{{item.id}}' flag ="1" ><span class="label label-success">是</span></td>   	
+		{% else %}
+		<td class="user-status"  id ='isgood_{{item.id}}' flag ="0"><span class="label label-fail">否</span></td>  
+		{% endif%}-->
+        <td class="f-14 user-manage" style ="width:120px" >
+		<!--<a title="编辑" href="javascript:;" onclick="user_edit('4','550','','编辑','user-add.html')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></i></a> -->
+		<a title="编辑" href="javascript:void(0);" onclick="device_edit(this,{{item.id}})" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
+		</td>
+      </tr>
+	  {% endfor%}
+	  
+    </tbody>
+  </table>
+  <span class="r">共有数据：<strong>88</strong> 条</span>
+  <div id="pageNav" class="pageNav"></div>
+</div>
+<!--_footer 作为公共模版分离出去-->
+
+<script type="text/javascript" src="{{url_for('static',filename='lib/jquery/1.9.1/jquery.min.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='lib/layer/2.4/layer.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='h-ui/js/H-ui.min.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='h-ui.admin/js/H-ui.admin.js')}}" ></script> 
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+
+
+<script type="text/javascript" src="{{url_for('static',filename='lib/My97DatePicker/4.8/WdatePicker.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='lib/datatables/1.10.0/jquery.dataTables.min.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='lib/laypage/1.2/laypage.js')}}" ></script> 
+<script type="text/javascript">
+
+var isEditing = false
+
+function addDevice(title,url,w,h){
+	if (title == null || title == '') {
+		title=false;
+	};
+	if (url == null || url == '') {
+		url="404.html";
+	};
+	if (w == null || w == '') {
+		w=800;
+	};
+	if (h == null || h == '') {
+		h=($(window).height() - 50);
+	};
+	layer.open({
+		type: 2,
+		area: [w+'px', h +'px'],
+		fix: false, //不固定
+		maxmin: true,
+		shade:0.4,
+		title: title,
+		content: url,
+		end:function(){
+			flush()
+		}
+	});
+}
+
+window.onload = (function(){
+    // optional set
+    pageNav.pre="&lt;上一页";
+    pageNav.next="下一页&gt;";
+    // p,当前页码,pn,总页面
+    pageNav.fn = function(p,pn){$("#pageinfo").text("当前页:"+p+" 总页: "+pn);};
+    //重写分页状态,跳到第三页,总页33页
+    pageNav.go(1,13);
+});
+
+$('.table-sort').dataTable({
+	"lengthMenu":false,//显示数量选择 
+	"bFilter": false,//过滤功能
+	"bPaginate": false,//翻页信息
+	"bInfo": false,//数量信息
+	"aaSorting": [[ 1, "asc" ]],//默认第几个排序
+	"bStateSave": false,//状态保存
+	"aoColumnDefs": [
+	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+	  {"orderable":false,"aTargets":[0,10]}// 制定列不参与排序
+	]
+});
+
+device_edit = function(obj,id){
+	if(isEditing == true){
+		return
+	}
+	tds = $(obj).parent().siblings();
+	
+	mapping ={
+		1:'服务器',
+		2:'存储',
+		3:'交换机'
+	};
+	selected = tds[2].innerText;
+	html = "<span class='select-box'><select id='typeSelect' class='select' size='1' name='type'>";
+	for(var i=1;i<=3;i++){
+		subhtml = "<option value='";
+		subhtml += i;
+		subhtml +="'";
+		if(i == selected){
+			subhtml += " selected";
+		}
+		subhtml +=">";
+		subhtml += mapping[i];
+		subhtml += "</option>";
+		html += subhtml;
+	}
+	html += "</select></span>"
+	tds[2].innerHTML = html
+	
+	
+	
+	
+	tds[3].innerHTML="<input id ='devicename' type='text'  class='input-text'  value='"+tds[3].innerText+"'/>";
+	tds[4].innerHTML="<input id ='sn' type='text'  class='input-text' value='"+tds[4].innerText+"'/>";
+	tds[5].innerHTML="<input id ='pn' type='text'  class='input-text' value='"+tds[5].innerText+"'/>";
+	
+	selected = tds[6].innerText;
+	html ="<span class='select-box'><select  id ='rackSelect' class='select' size='1' name='rack'>";
+	subhtml = ""
+	for(var i=1;i<=30;i++){
+		subhtml = "<option value='";
+		subhtml += i;
+		subhtml +="'";
+		if(i == selected){
+			subhtml += " selected";
+		}
+		subhtml +=">";
+		subhtml += i;
+		subhtml += "</option>";
+		html += subhtml;
+	}
+	html += "</select></span>"
+	tds[6].innerHTML = html
+	
+	tds[7].innerHTML="<input id ='u_number' type='text'  class='input-text' value='"+tds[7].innerText+"'/>";
+	tds[8].innerHTML="<input id ='user' type='text'  class='input-text' value='"+tds[8].innerText+"'/>";
+	
+	selected = tds[9].innerText;
+	html ="<span class='select-box'><select class='select' size='1' name='isuse' id = 'isgoodSelect'>";
+	subhtml = ""
+	for(var i=0;i<=1;i++){
+		subhtml = "<option value='";
+		subhtml += i;
+		subhtml +="'";
+		if(i == selected){
+			subhtml += " selected";
+		}
+		subhtml +=">";
+		subhtml += i;
+		subhtml += "</option>";
+		html += subhtml;
+	}
+	html += "</select></span>"
+	tds[9].innerHTML=html;
+	
+	($(obj).parent())[0].innerHTML="<input id='' type='button' class='btn btn-primary radius' onclick='saveEdit(this,"+id+");' value='保存'/><input type='button' class='btn btn-primary radius' onclick='cancleEdit()' value='取消'/>";
+	
+	isEditing = true;
+	
+};
+
+cancleEdit = function(){
+	flush()
+	isEditing = false;
+}
+
+saveEdit = function(obj,id){
+	
+	type = $('#typeSelect option:selected').val()
+	devicename = $('#devicename').val();
+	sn = $('#sn').val();
+	pn = $('#pn').val();
+	rack = $('#rackSelect option:selected' ).text();
+	u_number = $('#u_number').val();
+	user = $('#user').val();
+	isgood = $('#isgoodSelect option:selected').val();
+	var data={
+		id:id,
+		type:type,
+		devicename:devicename,
+		sn:sn,
+		pn:pn,
+		rack:rack,
+		u_number:u_number,
+		user:user,
+		isgood:isgood,
+	};
+	$.ajax({
+		type:'post',
+		data:data,
+		dataType:'json',
+		url:'{{url_for("web.admin_device_manager_update")}}',
+		success:function(res){
+			flush()
+			isEditing = false;
+		},
+		error:function(res){}
+		
+	
+	
+	});
+	
+	
+
+}
+
+device_search = function(obj){
+	text = $("#search_text").val()
+	var data ={
+	keyword:text
+	};
+	$.ajax({
+		type:'post',
+		url:'{{url_for("web.admin_device_manager")}}',
+		data: data,
+		dataType: 'json',
+		success:function(res){
+			var deviceList = res.deviceList;
+			var html = '';
+			$('#device_table tbody').html('')
+			for(var i = 0,l = deviceList.length; i < l; i++){
+				jsonObject = deviceList[i]
+				html += "<tr class='text-c'>";
+				html += "<td><input type='checkbox' value='1' name='' id="+jsonObject.id+" onclick='changeState(this)'></td>"
+				html += "<td>" + jsonObject.id + "</td>";
+				html += "<td>" + jsonObject.type + "</td>";
+				html += "<td>" + jsonObject.devicename + "</td>";
+				html += "<td>" + jsonObject.sn + "</td>";
+				html += "<td>" + jsonObject.pn + "</td>";
+				html += "<td>" + jsonObject.rack + "</td>";
+				html += "<td>" + jsonObject.u_number + "</td>";
+				html += "<td>" + jsonObject.user + "</td>";
+				html += "<td>" + jsonObject.isgood + "</td>";
+				html += " <td class='f-14 user-manage'><a title='编辑' href='javascript:void(0);' onclick='device_edit(this,"+ jsonObject.id +")' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6df;</i></a> </td>"
+				html +="</tr>"
+				
+
+				
+			}
+			$("#device_table tbody").html(html);	
+		},
+		error:function(res) {
+		},
+
+	});
+}
+
+function flush(){
+	var data ={
+	keyword:'',
+	};
+	$.ajax({
+		type:'post',
+		url:'{{url_for("web.admin_device_manager")}}',
+		data: data,
+		dataType: 'json',
+		success:function(res){
+			var deviceList = res.deviceList;
+			var html = '';
+			$('#device_table tbody').html('')
+			for(var i = 0,l = deviceList.length; i < l; i++){
+				jsonObject = deviceList[i]
+				html += "<tr class='text-c'>";
+				html += "<td><input type='checkbox' value='1' name='' id="+jsonObject.id+" onclick='changeState(this)'></td>"
+				html += "<td>" + jsonObject.id + "</td>";
+				html += "<td>" + jsonObject.type + "</td>";
+				html += "<td>" + jsonObject.devicename + "</td>";
+				html += "<td>" + jsonObject.sn + "</td>";
+				html += "<td>" + jsonObject.pn + "</td>";
+				html += "<td>" + jsonObject.rack + "</td>";
+				html += "<td>" + jsonObject.u_number + "</td>";
+				html += "<td>" + jsonObject.user + "</td>";
+				html += "<td>" + jsonObject.isgood + "</td>";
+				html += " <td class='f-14 user-manage'><a title='编辑' href='javascript:void(0);' onclick='device_edit(this,"+jsonObject.id+")' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6df;</i></a> </td>"
+				html +="</tr>"
+			}
+			$("#device_table tbody").html(html);	
+		},
+		error:function(res) {
+		},
+
+	});
+}
+
+deleteDevice = function(){
+	var idList =[];
+	$("table tbody input:checkbox").each(function(){
+		if($(this).attr('checked')=='checked'){
+			idList.push($(this).attr('id'))
+		}	
+	});
+	if(idList.length ==0){
+		
+		layer.msg('请先选择设备')
+		return;
+	}
+	var data ={
+		data: JSON.stringify(idList)
+	};
+	
+	layer.confirm('确认要删除吗？',function(index){
+		
+		$.ajax({
+			type:'post',
+			url: "{{url_for('web.admin_device_manager_delete')}}",
+			dataType:'json',
+			data:data,
+			success:function(res){
+				layer.msg(res.res);
+				flush();
+			},
+			error:function(){
+				layer.close(res.res);
+				flush();
+			},
+				
+		});
+	});
+}
+
+changeState =function(obj){
+	if($(obj).attr('checked')=='checked'){
+		$(obj).removeAttr('checked')
+	}else{
+		$(obj).attr('checked','checked')
+	}
+}
+
+
+
+</script>
+
+</body>
+</html>
