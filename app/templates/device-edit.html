@@ -1,0 +1,228 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='h-ui/css/H-ui.min.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='h-ui.admin/css/H-ui.admin.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='h-ui.admin/skin/default/skin.css')}}" id="skin" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='lib/Hui-iconfont/1.0.8/iconfont.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='h-ui.admin/css/style.css')}}" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<!--/meta 作为公共模版分离出去-->
+
+<title>添加设备</title>
+
+</head>
+<body style="background:transparent">
+<article class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-device-add">
+		<div class="row cl">
+				<input type="text" class="input-text" style='display: none' value="" placeholder="请输入设备名" id="id" name="id">
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>设备类型：</label>
+			<div class="formControls col-xs-8 col-sm-9"> 
+				<span class="select-box">
+					<select class="select" size="1" name="type" id="type">	
+						<option value="1" selected>服务器</option>
+						<option value="2">存储</option>
+						<option value="3">交换机</option>
+						<option value="5">内存</option>
+						<option value="6">硬盘</option>
+						<option value="7">SAS卡</option>
+					</select>
+				</span> 
+			</div>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>设备名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="请输入设备名" id="devicename" name="devicename">
+			</div>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>SN号：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="请输入序列号" id="sn" name="sn">
+			</div>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">PN号：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="pn" name="pn">
+			</div>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>机架：</label>
+			<div class="formControls col-xs-8 col-sm-9"> 
+				<span class="select-box">
+					<select class="select" size="1" name="rack" id="rack">	
+						<option value="1" selected>1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+						<option value="13">13</option>
+						<option value="14">14</option>
+						<option value="15">15</option>
+						<option value="16">16</option>
+						<option value="17">17</option>
+						<option value="18">18</option>
+						<option value="19">19</option>
+						<option value="20">20</option>
+						<option value="21">21</option>
+						<option value="22">22</option>
+						<option value="23">23</option>
+						<option value="24">24</option>
+						<option value="25">25</option>
+						<option value="26">26</option>
+						<option value="27">27</option>
+						<option value="28">28</option>
+						<option value="29">29</option>
+						<option value="30">30</option>
+					</select>
+				</span> 
+			</div>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>U数：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="请输入具体U数" id="u_number" name="u_number">
+			</div>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>使用人：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="请输入使用人" id="user" name="user">
+			</div>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否可用：</label>
+			<div class="formControls col-xs-8 col-sm-9"> 
+				<span class="select-box">
+					<select class="select" size="1" name="isuse" id="isuse">	
+						<option value="1" selected>是</option>
+						<option value="0">否</option>
+					</select>
+				</span> 
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">备注：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				
+				<textarea id='comment' name='comment',value='' rows='3' cols="20" style='resize:none;font-size:14px;width:100%;border: 1px solid #ddd'></textarea>
+			</div>
+		</div>
+	
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" >
+			</div>
+		</div>
+	</form>
+</article>
+
+
+<script type="text/javascript" src="{{url_for('static',filename='lib/jquery/1.9.1/jquery.min.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='lib/layer/2.4/layer.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='h-ui/js/H-ui.min.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='h-ui.admin/js/H-ui.admin.js')}}" ></script> 
+
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript" src="{{url_for('static',filename='lib/My97DatePicker/4.8/WdatePicker.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='lib/jquery.validation/1.14.0/jquery.validate.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='lib/jquery.validation/1.14.0/validate-methods.js')}}" ></script> 
+<script type="text/javascript" src="{{url_for('static',filename='lib/jquery.validation/1.14.0/messages_zh.js')}}" ></script> 
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-device-add").validate({
+		rules:{
+			type:{
+				required:true,
+			},
+			devicename:{
+				required:true,
+			},
+			sn:{
+				required:true,
+				
+			},
+			rack:{
+				required:true,
+				
+			},
+			u_number:{
+				required:true,
+			},
+			user:{
+				required:true,
+			},
+			isuse:{
+				required:true,
+			}
+			
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			$(form).ajaxSubmit({
+				dataType:"json",
+				type:"post",
+				url: '{{url_for("web.admin_device_manager_update")}}',
+				success:function( res ){
+					var index = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(index);
+				},
+				error:function(res) {
+			},
+			
+			});
+			
+		}
+	});
+	
+	
+});
+
+
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
