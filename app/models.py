@@ -58,28 +58,15 @@ class Device(db.Model,AutoSerialize):
     __tablename__ = 'device'
     id = Column(Integer,primary_key=True,autoincrement=True)
     type =  Column(Integer,nullable=False) #1服务器，2存储，3交换机
-    devicename = Column(String(16),nullable=False) #设备名字 indigo oak?
+    devicename = Column(String(16),nullable=False) #设备名字 indigo oak
     sn =  Column(String(64),nullable=False) #序列号
     pn =  Column(String(16)) #pn号
     rack =  Column(Integer,nullable=False) #下拉列表(1-31)
     u_number = Column(String(16),nullable=False) #u数
     user = Column(String(128),nullable=False) #使用人，以邮箱标识，因为可能有重名
     isgood = Column(Integer,nullable=False) #是否可用
+    comment = Column(String(256))#备注信息
    
-
-#散件表
-class SparePart(db.Model,AutoSerialize):
-    __tablename__ = 'sparepart'
-    id = Column(Integer,primary_key=True,autoincrement=True)
-    type =  Column(String(16),nullable=False) #cpu,内存，硬盘
-    sparepartname =  Column(String(64),nullable=False) #内存型号，硬盘型号等
-    sn =  Column(String(64),nullable=False) #序列号
-    pn =  Column(String(16)) #pn号
-    device = Column(Integer) #所属设备
-    user = Column(String(128),nullable=False) #使用人，以邮箱标识，因为可能有重名
-    isgood = Column(Integer,nullable=False) #是否可用
-
-
 #设备转移表
 class DeviceTransfer(db.Model,AutoSerialize):
     __tablename__ = 'devicetransfer'

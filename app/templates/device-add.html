@@ -34,10 +34,14 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>设备类型：</label>
 			<div class="formControls col-xs-8 col-sm-9"> 
 				<span class="select-box">
-					<select class="select" size="1" name="type">	
+					<select class="select" size="1" name="type" id="type">	
 						<option value="1" selected>服务器</option>
 						<option value="2">存储</option>
 						<option value="3">交换机</option>
+						<option value="4">CPU</option>
+						<option value="5">内存</option>
+						<option value="6">硬盘</option>
+						<option value="7">SAS卡</option>
 					</select>
 				</span> 
 			</div>
@@ -68,7 +72,7 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>机架：</label>
 			<div class="formControls col-xs-8 col-sm-9"> 
 				<span class="select-box">
-					<select class="select" size="1" name="rack">	
+					<select class="select" size="1" name="rack" id="rack">	
 						<option value="1" selected>1</option>
 						<option value="2">2</option>
 						<option value="3">3</option>
@@ -122,11 +126,19 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否可用：</label>
 			<div class="formControls col-xs-8 col-sm-9"> 
 				<span class="select-box">
-					<select class="select" size="1" name="isuse">	
+					<select class="select" size="1" name="isuse" id="isuse">	
 						<option value="1" selected>是</option>
 						<option value="0">否</option>
 					</select>
 				</span> 
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">备注：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				
+				<textarea id='comment' name='comment',value='' rows='3' cols="20" style='resize:none;font-size:14px;width:100%;border: 1px solid #ddd'></textarea>
 			</div>
 		</div>
 	
