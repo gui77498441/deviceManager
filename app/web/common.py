@@ -13,8 +13,30 @@ def welcome():
     if request.method == 'GET':
         return render_template("welcome.html")
    
+#资产转让
+@web.route('/device/transfer',methods=['GET','POST'])
+def deviceTransfer():
+    if request.method =='GET':
+        dbSession = db.session()
+        userList = dbSession.query(User).all()    
+        return render_template('device-transfer.html',userList = userList)
+    else:
+        senderId = request.form.get('senderId')
+        receiver = request.form.get('receiver')
+        deviceId = request.form.get('deviceId').strip(',')
+        dbSession = db.session()
+        senderUser = dbSession.query(User).filter(User.id==senderId).first()
+        senderName = senderUser.name
+        senderEmail = senderUser.email
+        receiverName = receiver[:receiver.find('(')]
+        receiverEmail = receiver[receiver.find('(')+1:len(receiver)-1]
 
-
+        print(senderName)
+        print(senderEmail)
+        print(receiverName)
+        print(receiverEmail)
+        print(deviceId)
+        return jsonify({'res':'success'})
 
 
 
@@ -36,9 +58,9 @@ def login():
             session['isadmin'] = user.isadmin
             session['id'] = user.id
             if user.isadmin == 0:
-                return render_template('commonuser.html',role='普通用户',name=user.name,messagenum=100)
+                return render_template('commonuser.html',role='普通用户',name=user.name,userId=user.id,messagenum=100)
             else:
-                return render_template('admin.html',role='管理员',name=user.name)
+                return render_template('admin.html',role='管理员',name=user.name,userId=user.id)
         else:
             flash('请检查用户名密码是否正确')
             return redirect(url_for('web.login'))#('login.html',result="用户名密码错误")
@@ -112,13 +134,7 @@ def deleteUser():
         print('user is not exist')
         return 'user is not exist'
 
-@web.route('/admin/getUserList',methods=['GET'])
-def getUserList():
-    dbSession = db.session()
-    userList = dbSession.query(User).all()
-    for user in userList:
-        print(str(user.id) + " " + user.name + " "+ user.email+ " "+ user.password+" "+str(user.isadmin))
-    return 'list success'
+
 
 @web.route('/admin/searchUser',methods=['GET'])
 def searchUser():

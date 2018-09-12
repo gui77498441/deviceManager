@@ -36,7 +36,7 @@
     <span class="l">
 	<a href="javascript:;" onclick="addDevice('添加设备','{{url_for("web.admin_device_manager_add")}}','','510')" class="btn btn-primary radius"><i class="icon-trash"></i> 添加设备</a>
 	<a href="javascript:;" onclick="deleteDevice()" class="btn btn-primary radius"><i class="icon-plus"></i> 批量删除</a>
-	<a href="javascript:;" onclick="transferDevice()" class="btn btn-primary radius"><i class="icon-trash"></i> 批量转让</a>
+	<a href="javascript:;" onclick="transferDevice('转让设备','{{url_for("web.deviceTransfer")}}','500','200')" class="btn btn-primary radius"><i class="icon-trash"></i> 批量转让</a>
 	<a href="javascript:;" onclick="flush()" class="btn btn-primary radius"><i class="icon-trash"></i> 刷新</a>
 	</span>
 	<span style ="float:right">
@@ -235,13 +235,8 @@ device_search = function(obj){
 				html += "<td>" + jsonObject.user + "</td>";
 				html += "<td>" + jsonObject.isgood + "</td>";
 				html += "<td>" + jsonObject.comment + "</td>";
-				html += "<td class='f-14 user-manage'><a title='编辑' href='javascript:void(0);' onclick="+"device_edit(this,'编辑设备','{{url_for('web.admin_device_manager_update')}}','','510')"+" class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6df;</i></a> \
-					<a title='删除' href='javascript:;' onclick='device_delete_one(this,"+jsonObject.id +")' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6e2;</i></a>	\
-					<a title='转让' href='javascript:;' onclick='device_transfer_one(this,"+jsonObject.id+")' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6ab;</i></a></td>";
-				
-				html +="</tr>"
-
-				
+				html += "<td class='f-14 user-manage'><a title='编辑' href='javascript:void(0);' onclick="+"device_edit(this,'编辑设备','{{url_for('web.admin_device_manager_update')}}','','510')"+" class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6df;</i></a> <a title='删除' href='javascript:;' onclick='device_delete_one(this,"+jsonObject.id +")' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6e2;</i></a><a title='转让' href='javascript:;' onclick='device_transfer_one(this,"+jsonObject.id+")' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6ab;</i></a></td>";
+				html +="</tr>";	
 			}
 			$("#device_table tbody").html(html);	
 		},
@@ -359,7 +354,51 @@ device_transfer_one =function(){
 	alert('transfer')
 }
 
-transferDevice=function(){
+transferDevice=function(title,url,w,h){
+	var idList =[];
+	$("table tbody input:checkbox").each(function(){
+		if($(this).attr('checked')=='checked'){
+			idList.push($(this).attr('id'))
+		}	
+	});
+	ids ='';
+	for(var i=0;i<idList.length;i++){
+		ids += idList[i];
+		ids += ','
+	}
+	if(idList.length ==0){
+		layer.msg('请先选择设备')
+		return;
+	}
+	if (title == null || title == '') {
+		title=false;
+	};
+	if (url == null || url == '') {
+		url="404.html";
+	};
+	if (w == null || w == '') {
+		w=800;
+	};
+	if (h == null || h == '') {
+		h=($(window).height() - 50);
+	};
+	layer.open({
+		type: 2,
+		area: [w+'px', h +'px'],
+		fix: false, //不固定
+		maxmin: true,
+		shade:0.4,
+		title: title,
+		content: url,
+		success:function(layero, index){
+			var body = layer.getChildFrame('body',index); 
+			body.contents().find("#senderId").val({{userId}});
+		    body.contents().find("#deviceId").val(ids);
+		},
+		end:function(){
+			flush()
+		}
+	});
 	alert('bashtransfer')
 }
 

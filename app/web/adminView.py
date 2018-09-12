@@ -7,18 +7,21 @@ from app import mail
 import json
 
 
-#管理员 设备管理(包括转借)
+#管理员 资产管理
 @web.route('/admin/device',methods=['GET','POST'])
 def admin_device_manager():
-    if session.get('email'):
-        print(session.get('email'))
-    else:
-        return render_template('login.html')
-    dbSession = db.session()
+   
+   
     if(request.method == 'GET'):
+        if session.get('email'):
+            print(session.get('email'))
+        else:
+            return render_template('login.html')
+        dbSession = db.session()
         deviceList = dbSession.query(Device).all()
-        return render_template('admin_deviceManager.html',deviceList = deviceList)
+        return render_template('admin_deviceManager.html',deviceList = deviceList,userId = session.get('id'))
     if(request.method == 'POST'):
+        dbSession = db.session()
         keyword = request.form.get('keyword')
         if(keyword):
             deviceList = dbSession.query(Device).filter(or_(Device.sn.like('%%'+keyword+'%%'),\
@@ -95,13 +98,27 @@ def admin_device_manager_update():
 
 
 
+
 #管理员 用户管理
-@web.route('/admin/user',methods=['GET'])
+@web.route('/admin/user',methods=['GET','POST'])
 def admin_user_manager():
     #查询所有用户信息
-    dbSession = db.session()
-    userList = dbSession.query(User).all()    
-    return render_template('admin_userManager.html',userList=userList)
+    if request.method == 'GET':
+        dbSession = db.session()
+        userList = dbSession.query(User).all()    
+        return render_template('admin_userManager.html',userList=userList)
+    else:
+        keyword = request.form.get('keyword')
+        if keyword:
+            dbSession = db.session()
+            userList = dbSession.query(User).filter(or_(User.name.like('%%'+keyword+'%%'),User.email.like('%%'+keyword+'%%')))
+            return jsonify(userList = [user.get_serialize() for user in userList])
+        else:
+            #查找全部
+            dbSession = db.session()
+            userList = dbSession.query(User).all()
+            return jsonify(userList = [user.get_serialize() for user in userList])
+
 
 #管理员 用户管理
 @web.route('/admin/user/delete',methods=['POST'])
@@ -139,11 +156,3 @@ def admin_user_manager_search():
 @web.route('/admin/todolist',methods=['GET','POST'])
 def admin_todo():
     return render_template('admin_todolist.html')
-
-
-
-
-#管理员界面
-@web.route('/admin/',methods=['GET','POST'])
-def admin():
-    return render_template('admin.html',role='管理员',name='superuser')

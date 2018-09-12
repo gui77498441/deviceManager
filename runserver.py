@@ -4,8 +4,7 @@ from app.models import db
 
 app = create_app()
 app.config.from_object(config['pro'])
-print(app.config.get('MAIL_USERNAME'))
-print(app.config.get('MAIL_PASSWORD'))
+
 
 db.init_app(app)
 mail.init_app(app)
